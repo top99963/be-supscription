@@ -4,7 +4,7 @@ var contactUs = require('./schema.contactUs')
 
 router.post('/login', function (req, res) {
     var { username, password } = req.body
-    if (username === 'ewf' && password === 'solar') {
+    if (username === 'reacc' && password === 'ptt') {
         res.send('success')
     } else {
         res.status(400).send('error')
