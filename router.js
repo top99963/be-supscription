@@ -1,5 +1,6 @@
 var router = require('express').Router()
 var subscription = require('./schema.subscription')
+var subscripe = require('./schema.subscripe')
 var contactUs = require('./schema.contactUs')
 
 router.post('/login', function (req, res) {
@@ -9,6 +10,26 @@ router.post('/login', function (req, res) {
     } else {
         res.status(400).send('error')
     }
+})
+
+router.get('/subscripe', function (req, res) {
+    subscripe.find({}, function (err, data) {
+        err ? res.status(400).send(err) : res.send(data)
+    })
+})
+
+router.post('/subscripe', function (req, res) {
+    var newSubscripe = new subscripe({
+        name: req.body.name,
+        email: req.body.email,
+        company: req.body.company,
+        contactNumber: req.body.contactNumber,
+        type: req.body.type
+    })
+    
+    newSubscripe.save(function (err, data) {
+        err ? res.status(400).send(err) : res.send(data)
+    })
 })
 
 router.get('/subscription', function (req, res) {
