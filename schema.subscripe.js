@@ -16,6 +16,10 @@ var SubScripeSchema = new mongoose.Schema({
 
     contactNumber: {
         type: String
+    },
+    
+    type: {
+        type: String
     }
 
 }, { collection: 'SubScripe' })
