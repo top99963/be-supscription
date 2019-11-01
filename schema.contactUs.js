@@ -18,8 +18,10 @@ var ContactUsSchema = new mongoose.Schema({
         type: String
     },
 
-
-
+    created: {
+        type: Date
+    }
+    
 }, { collection: 'ContactUs' })
 
 var ContactUs = mongoose.model('ContactUs', ContactUsSchema)

@@ -1,6 +1,6 @@
 var mongoose = require('./mongoose')
 
-var SubScripeSchema = new mongoose.Schema({
+var SubScribeSchema = new mongoose.Schema({
 
     name: {
         type: String
@@ -20,10 +20,14 @@ var SubScripeSchema = new mongoose.Schema({
     
     type: {
         type: String
+    },
+
+    created: {
+        type: Date
     }
 
-}, { collection: 'SubScripe' })
+}, { collection: 'SubScribe' })
 
-var SubScripe = mongoose.model('SubScripe', SubScripeSchema)
+var SubScribe = mongoose.model('SubScribe', SubScribeSchema)
 
-module.exports = SubScripe
+module.exports = SubScribe

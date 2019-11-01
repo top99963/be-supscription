@@ -46,6 +46,10 @@ var SubScriptionSchema = new mongoose.Schema({
         type: String
     },
 
+    created: {
+        type: Date
+    }
+
 }, { collection: 'SubScription' })
 
 var SubScription = mongoose.model('SubScription', SubScriptionSchema)

@@ -1,7 +1,8 @@
 var router = require('express').Router()
 var subscription = require('./schema.subscription')
-var subscripe = require('./schema.subscripe')
+var subscribe = require('./schema.subscribe')
 var contactUs = require('./schema.contactUs')
+var moment = require('moment')
 
 router.post('/login', function (req, res) {
     var { username, password } = req.body
@@ -12,22 +13,37 @@ router.post('/login', function (req, res) {
     }
 })
 
-router.get('/subscripe', function (req, res) {
-    subscripe.find({}, function (err, data) {
-        err ? res.status(400).send(err) : res.send(data)
-    })
+router.get('/subscribe', function (req, res) {
+    if (req.query && req.query.startTime && req.query.endTime) {
+        subscribe.find(
+            {
+                created:
+                {
+                    $gte: moment(req.query.startTime).startOf('day'),
+                    $lte: moment(req.query.endTime).endOf('day')
+                }
+            }
+            , function (err, data) {
+                err ? res.status(400).send(err) : res.send(data)
+            })
+    } else {
+        subscribe.find({}, function (err, data) {
+            err ? res.status(400).send(err) : res.send(data)
+        })
+    }
 })
 
-router.post('/subscripe', function (req, res) {
-    var newSubscripe = new subscripe({
+router.post('/subscribe', function (req, res) {
+    var newSubscribe = new subscribe({
         name: req.body.name,
         email: req.body.email,
         company: req.body.company,
         contactNumber: req.body.contactNumber,
-        type: req.body.type
+        type: req.body.type,
+        created: new Date
     })
-    
-    newSubscripe.save(function (err, data) {
+
+    newSubscribe.save(function (err, data) {
         err ? res.status(400).send(err) : res.send(data)
     })
 })
@@ -49,7 +65,8 @@ router.post('/subscription', function (req, res) {
         price: req.body.price,
         mwInstalled: req.body.mwInstalled,
         renewableType: req.body.renewableType,
-        expectedPrice: req.body.expectedPrice
+        expectedPrice: req.body.expectedPrice,
+        created: new Date
 
     })
     newSubscription.save(function (err, data) {
@@ -58,9 +75,23 @@ router.post('/subscription', function (req, res) {
 })
 
 router.get('/contact_us', function (req, res) {
-    contactUs.find({}, function (err, data) {
-        err ? res.status(400).send(err) : res.send(data)
-    })
+    if (req.query && req.query.startTime && req.query.endTime) {
+        contactUs.find(
+            {
+                created:
+                {
+                    $gte: moment(req.query.startTime).startOf('day'),
+                    $lte: moment(req.query.endTime).endOf('day')
+                }
+            }
+            , function (err, data) {
+                err ? res.status(400).send(err) : res.send(data)
+            })
+    } else {
+        contactUs.find({}, function (err, data) {
+            err ? res.status(400).send(err) : res.send(data)
+        })
+    }
 })
 
 router.post('/contact_us', function (req, res) {
@@ -69,7 +100,8 @@ router.post('/contact_us', function (req, res) {
         topic: topic,
         name: name,
         email: email,
-        message: message
+        message: message,
+        created: new Date
     })
     newContactUs.save(function (err, data) {
         err ? res.status(400).send(err) : res.send(data)
